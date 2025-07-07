@@ -1,0 +1,49 @@
+logging:
+  level:
+    org.apache.coyote.http11.Http11InputBuffer: TRACE # Incoming HTTP requests
+    com.frances.twitch.external.TwitchApiClient: DEBUG
+    org.springframework.jdbc.datasource.init: DEBUG
+    org.springframework.jdbc.core: DEBUG
+
+# let the default property in json be all not non values
+spring:
+  jackson:
+    default-property-inclusion: non_null
+    property-naming-strategy: SNAKE_CASE      # Use snake_case in json
+  cloud:
+    openfeign:
+      oauth2:
+        enabled: true
+        clientRegistrationId: twitch
+      client:
+        config:
+          twitch-api:
+            url: https://api.twitch.tv/helix    # feign client api prefix
+            loggerLevel: basic
+            default-request-headers:
+              Client-Id: ${TWITCH_CLIENT_ID}
+  security:
+    oauth2:
+      client:
+        registration:
+          twitch:
+            authorization-grant-type: client_credentials
+            client-authentication-method: client_secret_post  # send post request
+            client-id: ${TWITCH_CLIENT_ID}
+            client-secret: ${TWITCH_CLIENT_SECRET}
+        provider:
+          twitch:
+            token-uri: https://id.twitch.tv/oauth2/token    # to get the authentication token
+  # database configuration
+  datasource:
+    url: jdbc:mysql://${DATABASE_URL:localhost}:${DATABASE_PORT:3306}/twitch?createDatabaseIfNotExist=true
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:secret}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: ${DATABASE_INIT:always}
+      schema-locations: "classpath:database-init.sql"
+  cache:
+    caffeine:
+      spec: expireAfterWrite=1m

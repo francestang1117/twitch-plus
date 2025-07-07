@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: twitch
+      MYSQL_ROOT_PASSWORD: secret
+      TZ: UTC
+    volumes:
+      - mysql-local:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+# permanent data storage
+volumes:
+  mysql-local:
