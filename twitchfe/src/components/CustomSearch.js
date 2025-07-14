@@ -31,7 +31,15 @@ function CustomSearch({ onSuccess }) {
         shape="round"
         onClick={searchOnClick}
         icon={<SearchOutlined />}
-        style={{ marginLeft: "20px", marginTop: "20px" }}
+        style={{
+          fontSize: "15px",
+          marginLeft: "20px",
+          marginTop: "20px",
+          height: "40px",
+          padding: "0 18px",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         Custom Search
       </Button>
