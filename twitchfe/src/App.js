@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, message } from "antd";
+import { Layout, Menu, message, Spin } from "antd";
 import PageHeader from "./components/PageHeader";
 import { FireOutlined, LikeOutlined } from "@ant-design/icons";
 import {
@@ -23,6 +23,8 @@ function App() {
     streams: [],
     clips: [],
   });
+  // add loading effect
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getTopGames()
@@ -58,16 +60,16 @@ function App() {
 
   const mapTopGamesToProps = (topGames) => [
     {
-      label: "Recommend for you!",
+      label: <span className="fancy-menu-label">Recommend for you!</span>,
       key: "recommendation",
-      icon: <LikeOutlined />,
+      icon: <LikeOutlined style={{ fontSize: "17px" }} />,
     },
     {
-      label: "Popular Games",
+      label: <span className="fancy-menu-label">Popular Games</span>,
       key: "popular_games",
-      icon: <FireOutlined />,
+      icon: <FireOutlined style={{ fontSize: "17px" }} />,
       children: topGames.map((game) => ({
-        label: game.name,
+        label: <span className="game-label">{game.name}</span>,
         key: game.id,
         icon: (
           <img
@@ -92,17 +94,26 @@ function App() {
 
   // ant design will call this function, and ant design will use key, which from ant Menu
   const onGameSelect = ({ key }) => {
+    setLoading(true);
     if (key === "recommendation") {
-      getRecommendations().then((data) => {
-        setResources(data);
-      });
+      getRecommendations()
+        .then((data) => {
+          setResources(data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
       return;
     }
 
     // if key is not recommendation, it is game id
-    searchGameById(key).then((data) => {
-      setResources(data);
-    });
+    searchGameById(key)
+      .then((data) => {
+        setResources(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const favoriteOnChange = () => {
@@ -143,6 +154,7 @@ function App() {
               loggedIn={loggedIn}
               favoriteItems={favoriteItems}
               favoriteOnChange={favoriteOnChange}
+              loading={loading}
             />
           </Content>
         </Layout>
