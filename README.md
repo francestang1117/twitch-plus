@@ -206,7 +206,7 @@ Run all tests:
 ## 🛠️ Planned Features / Improvements
 Here are some ideas and planned improvements for future versions:
 
-- [ ] Default placeholder image for games missing `box_art_url`
+- [x] Default placeholder image for games missing `box_art_url`
 - [ ] Integrate Python ML microservice for hybrid recommendation
 - [ ] Game detail page: Show richer metadata (e.g. viewer count, genres, description)
 
