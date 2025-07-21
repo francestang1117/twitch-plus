@@ -158,7 +158,11 @@ const renderCardGrid = (data, loggedIn, favs, favOnChange, loading) => {
               </div>
             }
           >
-            <a href={item.url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={`https://www.twitch.tv/${item.userLogin}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img
                 alt="placeholder"
                 src={processUrl(item.thumbnail_url)}
@@ -178,6 +182,16 @@ const renderCardGrid = (data, loggedIn, favs, favOnChange, loading) => {
                 }}
               />
             </a>
+            <div
+              style={{
+                marginTop: "10px",
+                fontSize: "14px",
+                color: "#888",
+                textAlign: "right",
+              }}
+            >
+              {item.view_count?.toLocaleString() || "0"} views
+            </div>
           </Card>
         </List.Item>
       )}
@@ -192,7 +206,7 @@ const Home = ({
   favoriteOnChange,
   loading,
 }) => {
-  const { videos, streams, clips } = resources;
+  const { videos = [], streams = [], clips = [] } = resources || {};
   const {
     videos: favVideos,
     streams: favStreams,
