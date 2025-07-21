@@ -38,13 +38,7 @@ public class TwitchFeignOAuth2Config {
             if (authorizedClient != null) {
                 // get the valid access token
                 String token = authorizedClient.getAccessToken().getTokenValue();
-                System.out.println("Access Token: " + token);
-
-                System.out.println("[DEBUG] Feign Request Headers:");
                 requestTemplate.header("Authorization", "Bearer " + token);
-                requestTemplate.headers().forEach((k, v) -> System.out.println(k + ": " + v));
-            } else {
-                System.err.println("[ERROR] Failed to authorize Twitch client. OAuth2AuthorizedClient is null.");
             }
 
             // add the client id to header

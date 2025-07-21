@@ -33,7 +33,8 @@ CREATE TABLE items
     thumbnail_url VARCHAR(255),
     broadcaster_name VARCHAR(255),
     game_id VARCHAR(255),
-    type VARCHAR(255)
+    type VARCHAR(255),
+    view_count INT
 );
 
 -- ON DELETE CASCADE: if user/item is deleted, the record will be deleted as well

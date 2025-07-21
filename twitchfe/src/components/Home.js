@@ -182,6 +182,16 @@ const renderCardGrid = (data, loggedIn, favs, favOnChange, loading) => {
                 }}
               />
             </a>
+            <div
+              style={{
+                marginTop: "10px",
+                fontSize: "14px",
+                color: "#888",
+                textAlign: "right",
+              }}
+            >
+              {item.view_count?.toLocaleString() || "0"} views
+            </div>
           </Card>
         </List.Item>
       )}
