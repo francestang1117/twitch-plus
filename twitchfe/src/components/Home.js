@@ -158,7 +158,11 @@ const renderCardGrid = (data, loggedIn, favs, favOnChange, loading) => {
               </div>
             }
           >
-            <a href={item.url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={`https://www.twitch.tv/${item.userLogin}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img
                 alt="placeholder"
                 src={processUrl(item.thumbnail_url)}
@@ -192,7 +196,7 @@ const Home = ({
   favoriteOnChange,
   loading,
 }) => {
-  const { videos, streams, clips } = resources;
+  const { videos = [], streams = [], clips = [] } = resources || {};
   const {
     videos: favVideos,
     streams: favStreams,

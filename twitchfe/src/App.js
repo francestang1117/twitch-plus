@@ -136,7 +136,10 @@ function App() {
       />
       <Layout>
         <Sider width={300} className="site-layout-background">
-          <CustomSearch onSuccess={customSearchOnSuccess} />
+          <CustomSearch
+            onSuccess={customSearchOnSuccess}
+            onLoadingChange={setLoading}
+          />
           <Menu
             mode="inline"
             onSelect={onGameSelect}

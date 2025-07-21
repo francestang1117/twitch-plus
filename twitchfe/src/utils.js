@@ -91,6 +91,20 @@ export const searchGameByName = (gameName) => {
   });
 };
 
+const searchCategoriesUrl = `/search/categories?query=`;
+
+export const getCategoryOptions = (query) => {
+  return fetch(`${searchCategoriesUrl}${encodeURIComponent(query)}`).then(
+    (response) => {
+      if (response.status !== 200) {
+        throw Error("Fail to search game categories");
+      }
+
+      return response.json();
+    }
+  );
+};
+
 const favoriteItemUrl = `/favorite`;
 
 export const addFavoriteItem = (favItem) => {

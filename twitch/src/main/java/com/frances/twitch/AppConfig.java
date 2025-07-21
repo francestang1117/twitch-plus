@@ -1,6 +1,5 @@
 package com.frances.twitch;
 
-
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 
 import javax.sql.DataSource;
 
-
 @Configuration
 public class AppConfig {
 
@@ -28,23 +26,23 @@ public class AppConfig {
         http
                 // disable CSRF protection
                 .csrf().disable()
-                .authorizeHttpRequests(auth ->
-                        auth
-                                // allow access to static resources
-                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()       // download the source from the frontend locally
-                                // allow access to frontend assets
-                                .requestMatchers(HttpMethod.GET, "/", "/index.html", "/*.json", "/*.png", "/static/**").permitAll()
-                                // allow unauthenticated access to login, register and logout
-                                .requestMatchers(HttpMethod.POST, "/login", "/register", "/logout").permitAll()
-                                // allow public GET access to recommendation/game/search APIs
-                                .requestMatchers(HttpMethod.GET, "/recommendation", "/game", "/search").permitAll()
-                                // all other requests should be authenticated
-                                .anyRequest().authenticated()
+                .authorizeHttpRequests(auth
+                        -> auth
+                        // allow access to static resources
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // download the source from the frontend locally
+                        // allow access to frontend assets
+                        .requestMatchers(HttpMethod.GET, "/", "/index.html", "/*.json", "/*.png", "/static/**").permitAll()
+                        // allow unauthenticated access to login, register and logout
+                        .requestMatchers(HttpMethod.POST, "/login", "/register", "/logout").permitAll()
+                        // allow public GET access to recommendation/game/search APIs
+                        .requestMatchers(HttpMethod.GET, "/recommendation", "/game", "/search/**").permitAll()
+                        // all other requests should be authenticated
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))        // if authentication failed, return unauthorized http status
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // if authentication failed, return unauthorized http status
                 .and()
-                .formLogin()     // offer a form request
+                .formLogin() // offer a form request
                 .successHandler((req, res, auth) -> res.setStatus(HttpStatus.NO_CONTENT.value()))
                 .failureHandler(new SimpleUrlAuthenticationFailureHandler())
                 .and()
@@ -52,7 +50,6 @@ public class AppConfig {
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT));
         return http.build();
     }
-
 
     @Bean
     UserDetailsManager users(DataSource dataSource) {
